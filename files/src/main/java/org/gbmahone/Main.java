@@ -1,24 +1,37 @@
 package org.gbmahone;
 
 import java.io.*;
+import java.util.Scanner;
 
 
 public class Main {
     public static void main(String[] args) {
-        String[] lines = new String[]{"Good morning", "Good afternoon", "Good night"};
 
-        String path = "c:\\workspace\\out.txt";
+        Scanner sc = new Scanner(System.in);
 
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(path, true))){
-            for (String line : lines) {
-                bw.write(line);
-                bw.newLine(); //bw.newLine é pra dar a quebra de linha
-            }
+        System.out.println("Enter a folder path: ");
+        String strPath = sc.nextLine();
+
+        File path = new File(strPath);
+
+        // vetor das pastas com uma referencia que especifica somente quem é pasta(File::isDirectory)
+        File[] folders = path.listFiles(File::isDirectory);
+        System.out.println("FOLDERS:");
+        for (File folder : folders) {
+            System.out.println(folder);
         }
-        catch (IOException e) {
-            e.printStackTrace();
+        // vetor com a lista somente de arquivos(File::isFile)
+        File[] files = path.listFiles(File::isFile);
+        System.out.println("FILES:");
+        for (File file : files){
+            System.out.println(file);
         }
 
+        // criar uma sub pasta chamada subdir a partir da pasta informada no strPath
+        //o uso do boolean é pra confirmar se a ação foi feita
+        //mkdir() é pra criar a pasta
+        boolean success = new File(strPath + "\\subdir").mkdir();
+        System.out.println("Directory created successfully: " + success);
     }
 
 }
