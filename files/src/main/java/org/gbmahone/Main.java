@@ -9,13 +9,8 @@ public class Main {
     public static void main(String[] args) {
 
      String path = "c:\\workspace\\in.txt";
-     FileReader fr = null;
-     BufferedReader br = null;
 
-     try {
-         fr = new FileReader(path);
-         br = new BufferedReader(fr);
-
+     try (BufferedReader br = new BufferedReader(new FileReader(path))) {
          String line = br.readLine();
         // esse readline vai ler uma linha do arquivo e se estiver no final do arquivo
          // vai me retornar nullo
@@ -29,18 +24,6 @@ public class Main {
          System.out.println("Error: " + e.getMessage());
      }
      finally {
-
-         try {
-            if (br != null) {
-                br.close();
-            }
-            if (fr != null) {
-                fr.close();
-            }
-         }
-         catch (IOException e) {
-            e.printStackTrace();
-         }
      }
 
     }
