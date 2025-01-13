@@ -35,15 +35,16 @@ public class Main {
 
             String itemCsv = br.readLine();
             while (itemCsv != null){
-                String[] fields = itemCsv.split(", ");
+                String[] fields = itemCsv.split(", "); // separar o conteudo pela virgula e transformar em variaveis
                 String name = fields[0];
-                double price = Double.parseDouble(fields[1]);
-                int quantity = Integer.parseInt(fields[2]);
+                double price = Double.parseDouble(fields[1]); // convertendo o fields que é uma String em double, usando o parse
+                int quantity = Integer.parseInt(fields[2]); // convertendo o fields que é String em Ingeter, usando o parse
 
                 list.add(new Product(name, price, quantity));
 
                 itemCsv = br.readLine();
             }
+            // bufferedWriter é pra gravar o conteudo e pra usar ele tem que instaciar o FileWriter dentro dele
             try (BufferedWriter bw = new BufferedWriter(new FileWriter(targetFileStr))) {
 
                 for (Product item : list){
