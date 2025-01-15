@@ -1,47 +1,67 @@
 package org.gbmahone;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import org.gbmahone.entities.Product;
+
+import java.io.*;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+import java.util.Scanner;
 
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ParseException {
 
-     String path = "c:\\workspace\\in.txt";
-     FileReader fr = null;
-     BufferedReader br = null;
+        Locale.setDefault(Locale.US);
+        Scanner sc = new Scanner(System.in);
 
-     try {
-         fr = new FileReader(path);
-         br = new BufferedReader(fr);
+        List<Product> list = new ArrayList<>();
 
-         String line = br.readLine();
-        // esse readline vai ler uma linha do arquivo e se estiver no final do arquivo
-         // vai me retornar nullo
+        System.out.println("Enter file path: ");
+        String sourceFileStr = sc.nextLine();
 
-         while (line != null) {
-             System.out.println(line);
-             line = br.readLine();
-         }
-     }
-     catch (IOException e) {
-         System.out.println("Error: " + e.getMessage());
-     }
-     finally {
+        File sourceFile = new File(sourceFileStr);
+        String sourceFolderStr = sourceFile.getParent();
 
-         try {
-            if (br != null) {
-                br.close();
+        System.out.println(sourceFolderStr);
+
+        // mkdir é pra criar uma nova pasta(diretorio)
+        boolean success = new File(sourceFolderStr + "/out").mkdir();
+
+        String targetFileStr = sourceFolderStr + "/out/summary.csv ";
+
+        try (BufferedReader br = new BufferedReader(new FileReader(sourceFileStr))) {
+
+            String itemCsv = br.readLine();
+            while (itemCsv != null){
+                String[] fields = itemCsv.split(", "); // separar o conteudo pela virgula e transformar em variaveis
+                String name = fields[0];
+                double price = Double.parseDouble(fields[1]); // convertendo o fields que é uma String em double, usando o parse
+                int quantity = Integer.parseInt(fields[2]); // convertendo o fields que é String em Ingeter, usando o parse
+
+                list.add(new Product(name, price, quantity));
+
+                itemCsv = br.readLine();
             }
-            if (fr != null) {
-                fr.close();
+            // bufferedWriter é pra gravar o conteudo e pra usar ele tem que instaciar o FileWriter dentro dele
+            try (BufferedWriter bw = new BufferedWriter(new FileWriter(targetFileStr))) {
+
+                for (Product item : list){
+                    bw.write(item.getName() + ", " + String.format("%.2f",item.total()));
+                    bw.newLine();
+                }
+
+                System.out.println(targetFileStr + "CREATED");
+
+            }catch (IOException e) {
+                System.out.println("Error writing file: " + e.getMessage());
             }
-         }
-         catch (IOException e) {
-            e.printStackTrace();
-         }
-     }
+
+        } catch (IOException e) {
+            System.out.println("Error writing file: " + e.getMessage());
+        }
 
     }
+
 }
