@@ -20,6 +20,7 @@ public class RentalService {
 
     public void processInvoice(CarRental carRental) {
 
+        //double minutes recebe a duração entre o start e o finish convertido em minutos
         double minutes = Duration.between(carRental.getStart(), carRental.getFinish()).toMinutes();
         double hours = minutes / 60.0;
 
