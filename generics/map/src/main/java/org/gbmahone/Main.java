@@ -8,18 +8,18 @@ import java.util.Map;
 public class Main {
     public static void main(String[] args) {
 
-        Map<Product, Double> cookies = new HashMap<>();
+        Map<Product, Double> stock = new HashMap<>();
 
         Product p1 = new Product("Tv", 900.00);
         Product p2 = new Product("Notebook", 1200.00);
         Product p3 = new Product("Tablet", 400.00);
 
-        cookies.put(p1, p1.getPrice());
-        cookies.put(p2, p2.getPrice());
-        cookies.put(p3, p3.getPrice());
+        stock.put(p1, 10000.00);
+        stock.put(p2, 20000.00);
+        stock.put(p3, 15000.00);
 
         Product ps = new Product("Tv", 900.00);
 
-        System.out.println("Contains 'ps' key: " + cookies.containsKey(ps));
+        System.out.println("Contains 'ps' key: " + stock.containsKey(ps));
     }
 }
